@@ -1,0 +1,58 @@
+CarouselSlider(
+                  items: list
+                      .map((item) => Container(
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Center(child: Text(item.toString())),
+                    
+                  ))
+                      .toList(),
+                  carouselController: carouselController,
+                  options: CarouselOptions(
+                    height: size.height * 0.20,
+                    aspectRatio: 16/9,
+                    viewportFraction: 1,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    reverse: false,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    onPageChanged: (val,frf) {
+                      carouselIndex = val;
+                      setStateNotifier.onSetStateChange();
+                    },
+
+                    scrollDirection: Axis.horizontal,
+                  )
+              ),
+              Positioned(
+                  left: size.width * 0.3,
+                  right: size.width * 0.3,
+                  top: size.height * 0.15,
+                  child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: list.asMap().entries.map((entry) {
+                          return GestureDetector(
+                            onTap: () =>
+                                carouselController.animateToPage(entry.key),
+                            child: Container(
+                              width: 4.0,
+                              height: 10.0,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 4.0),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: carouselIndex == entry.key
+                                      ? Colors.green
+                                      : Colors.grey.shade400),
+                            ),
+                          );
+                        }).toList(),
+                      )))
